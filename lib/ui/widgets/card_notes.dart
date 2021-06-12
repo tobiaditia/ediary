@@ -26,76 +26,23 @@ class WidgetCardNotes extends StatelessWidget {
         ], begin: Alignment.topRight, end: Alignment.bottomLeft),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    note.title,
-                    style: style1.copyWith(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    note.text,
-                    style: style1,
-                  )
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(10),
-                  gradient: LinearGradient(colors: [
-                    Colors.white54,
-                    Colors.black12,
-                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
-                ),
-                child: Icon(Icons.emoji_emotions, color: Color(0xffD9B86C)),
-              )
-            ],
+          Text(
+            note.title,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: style1.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.transparent),
-                child: Text(
-                  "test",
-                  style: TextStyle(
-                      color: Color(0xff9F6BAD), fontWeight: FontWeight.bold),
-                ),
-              )
-            ],
-          )
-          // Row(
-          //   children: <Widget>[
-          //     Column(
-          //       children: <Widget>[
-          //         Text(
-          //           "Mon",
-          //           style: style1,
-          //         ),
-          //         Text(
-          //           "11",
-          //           style: style1,
-          //         )
-          //       ],
-          //     )
-          //   ],
-          // )
+          Text(
+            note.text,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: style1,
+          ),
         ],
       ),
     );

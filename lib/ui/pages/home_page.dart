@@ -1,8 +1,11 @@
-import 'package:ediary/model/note.dart';
-import 'package:ediary/model/task.dart';
+import 'package:ediary/ui/pages/note_detail.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+//view
 import 'package:ediary/ui/pages/note_add.dart';
 import 'package:ediary/ui/widgets/card_notes.dart';
-import 'package:flutter/material.dart';
+//model
+import 'package:ediary/model/note.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,6 +14,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextStyle style1 = TextStyle(color: Colors.white);
+      var dfMontYear = DateFormat.yMMM().format(DateTime.now());
+      var dfDayString = DateFormat.EEEE().format(DateTime.now());
+      var dfDay = DateFormat.d().format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +26,7 @@ class _HomePageState extends State<HomePage> {
         child: Stack(
           children: [
             ListView(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+              padding: EdgeInsets.fromLTRB(15, 20, 15, 70),
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,22 +49,48 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "February",
-                        style: style1,
+                        dfMontYear,
+                        style: style1.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 10,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Text(
-                                "Mon",
-                                style: style1,
-                              ),
-                              Text(
-                                "11",
-                                style: style1,
-                              )
-                            ],
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 2.0,
+                                  spreadRadius: 0.0,
+                                  offset: Offset(2.0, 2.0),
+                                )
+                              ],
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Colors.white,
+                                    Colors.black12,
+                                    Colors.yellow[100]
+                                  ],
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft),
+                            ),
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  dfDayString,
+                                  style: style1,
+                                ),
+                                Text(
+                                  dfDay,
+                                  style: style1,
+                                )
+                              ],
+                            ),
                           )
                         ],
                       )
@@ -73,36 +105,6 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     Text(
                       "Mood Notes",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    Icon(Icons.add_box, color: Colors.yellow)
-                  ],
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Container(
-                  height: 115,
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      final NoteModel note = noteList[index];
-                      return Container(
-                          margin: EdgeInsets.only(
-                              right: (index == noteList.length - 1) ? 0 : 15),
-                          child: WidgetCardNotes(note));
-                    },
-                    itemCount: noteList.length,
-                    scrollDirection: Axis.horizontal,
-                  ),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "To Do",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     GestureDetector(
@@ -133,50 +135,95 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: 25,
                 ),
+                SizedBox(
+                  height: 90,
+                  child: noteList.length == 0
+                      ? Container(
+                          width: (MediaQuery.of(context).size.width - 30) / 1.2,
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: Offset(0, 0),
+                                color: Colors.white10,
+                              ),
+                            ],
+                            gradient: LinearGradient(
+                                colors: [
+                                  Colors.white10,
+                                  Colors.black12,
+                                ],
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Isi Note Yuk",
+                              style: style1.copyWith(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ))
+                      : ListView.builder(
+                          itemBuilder: (context, index) {
+                            final NoteModel note = noteList[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return NoteDetailPage(
+                                    note: note,
+                                  );
+                                }));
+                              },
+                              child: Container(
+                                  margin: EdgeInsets.only(
+                                      right: (index == noteList.length - 1)
+                                          ? 0
+                                          : 15),
+                                  child: WidgetCardNotes(note)),
+                            );
+                          },
+                          itemCount: noteList.length,
+                          scrollDirection: Axis.horizontal,
+                        ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
                 Container(
                   padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Color(0xff8561E8)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
                     children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: ShaderMask(
-                          shaderCallback: (rect) {
-                            return LinearGradient(
-                                    colors: [Colors.black, Colors.transparent],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter)
-                                .createShader(Rect.fromLTRB(
-                                    0, 120, rect.width, rect.height));
-                          },
-                          blendMode: BlendMode.dstIn,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            height: 130,
-                            child: ListView(
-                                children: taskList.map((task) {
-                              return CheckboxListTile(
-                                title: Text(
-                                  task.title,
-                                  style: style1,
-                                ),
-                                value: task.checked,
-                                activeColor: Colors.black,
-                                onChanged: (value) {},
-                              );
-                            }).toList()),
-                          ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.asset(
+                          'assets/images/steve.jpg',
+                          fit: BoxFit.contain,
+                          width: MediaQuery.of(context).size.width / 2,
                         ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "\" Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking.\" ",
+                        style: style1.copyWith(
+                            fontSize: 14, fontStyle: FontStyle.italic),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "- Steve Jobs",
+                        style: style1.copyWith(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
@@ -186,72 +233,6 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                  height: 70,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Color(0xff3F3838),
-                              border: Border.all(color: Color(0xffD9B86C)),
-                              borderRadius: BorderRadius.circular(30)),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.book,
-                                color: Color(0xffD9B86C),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                'Home',
-                                style: TextStyle(
-                                    color: Color(0xffD9B86C),
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: Icon(
-                            Icons.new_releases,
-                            color: Color(0xff5E557C),
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: Icon(
-                            Icons.new_releases,
-                            color: Color(0xff5E557C),
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: Icon(
-                            Icons.supervised_user_circle,
-                            color: Color(0xff5E557C),
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-            )
           ],
         ),
       ),

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-class NoteAddPage extends StatelessWidget {
+class NoteAddPage extends StatefulWidget {
+  @override
+  _NoteAddPageState createState() => _NoteAddPageState();
+}
+
+class _NoteAddPageState extends State<NoteAddPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,80 +14,47 @@ class NoteAddPage extends StatelessWidget {
             child: Stack(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-              decoration: BoxDecoration(),
-              height: 60,
+              padding: EdgeInsets.symmetric(vertical: 20),
+              height: 80,
               child: Stack(
                 children: [
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
+                    child: MaterialButton(
+                      onPressed: () => Navigator.pop(context),
+                      color: Colors.grey[400],
+                      shape: CircleBorder(),
+                      padding: EdgeInsets.only(left: 7),
                       child: Icon(
                         Icons.arrow_back_ios,
                         color: Colors.white,
+                        size: 20,
                       ),
                     ),
                   ),
-                  Center(
-                    child: Text("Tambah Note",
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 80),
+                    child: Center(
+                      child: Text(
+                        "Tambah Note",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center),
+                      ),
+                    ),
                   )
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 100,
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Text(
-                          "Send",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Text(
-                          "Send",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+            Center(
+              child: Text(
+                "Cooming Soon",
+                style: TextStyle(color: Colors.white, fontSize: 18),
               ),
-            )
+            ),
           ],
         )));
   }
